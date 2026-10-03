@@ -56,12 +56,14 @@ footer b{color:var(--c)}footer .s{display:block;color:var(--mut);font-size:12px;
 #about .sch{border-top:1px solid rgba(255,255,255,.35);padding-top:12px;font-size:13px}#about .sch .n{font-size:17px;font-weight:700}
 #about .x{position:absolute;top:10px;inset-inline-start:10px;width:34px;height:34px;padding:0;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;border:0;font-size:18px}
 h1 #aboutBtn{width:30px;height:30px;border-radius:8px;vertical-align:middle;cursor:pointer}
+.semsw{margin:2px 16px 4px;display:flex;gap:8px}.semsw a{flex:1;text-align:center;text-decoration:none;font-size:14px;font-weight:700;padding:7px 10px;border-radius:12px;background:var(--c);color:#fff}
 </style>
 </head>
 <body>
 <div id="splash" onclick="this.remove()"><img src="icon-192.png" alt="أيقونة التطبيق" onclick="openAbout(event)"><div class="hint">اضغطي على الأيقونة لعرض البطاقة التعريفية</div><h1>مختبر العلوم ثلاثي الأبعاد</h1><div>الصف السادس • الفصل الأول</div><div class="sc" style="margin-top:14px">🏫 مدرسة حمود الأساسية المختلطة</div><div class="yr">العام الدراسي 2026/2027</div><div class="cr">إعداد وتنفيذ المعلمة <b>مارينا البقاعين</b><br>بالتعاون مع معلمة العلوم <b>لجين الضلاعين</b></div><button type="button">ابدأ</button></div>
 <div id="about" onclick="closeAbout()"><div class="card" onclick="event.stopPropagation()"><button class="x" type="button" onclick="closeAbout()" aria-label="إغلاق">✕</button><img src="icon-192.png" alt="أيقونة التطبيق"><h2>مختبر العلوم ثلاثي الأبعاد</h2><div class="st">الصف السادس • الفصل الأول</div><div class="stats"><div><b id="nU">4</b>وحدات</div><div><b id="nL">9</b>دروس</div><div><b id="nM">0</b>نموذجًا 3D</div></div><ul id="uList"></ul><div class="how">اسحب النموذج لتدويره • كبّره بإصبعين أو العجلة • انقر على أي جزء لتظهر معلوماته من الكتاب</div><div class="sch"><div class="n">🏫 مدرسة حمود الأساسية المختلطة</div><div>العام الدراسي 2026/2027</div><div style="margin-top:6px">إعداد وتنفيذ المعلمة <b>مارينا البقاعين</b><br>بالتعاون مع معلمة العلوم <b>لجين الضلاعين</b></div></div></div></div>
 <header><h1><img id="aboutBtn" src="icon-192.png" alt="تعريف"> مختبر العلوم ثلاثي الأبعاد – الصف السادس / الفصل الأول</h1><p>اختر الوحدة والدرس والنموذج، دوّر بالسحب، وانقر على أي جزء لتظهر معلوماته.</p></header>
+<div class="semsw"><a href="term2.html">📘 الانتقال إلى مختبر الفصل الثاني ←</a></div>
 <div class="row" id="units"></div><div class="row" id="lessons"></div><div class="row" id="scenes"></div>
 <main>
 <div id="stage"><canvas id="c"></canvas><div id="hint">اسحب للتدوير • العجلة للتكبير • انقر على جزء</div></div>
