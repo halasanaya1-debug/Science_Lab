@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d9e75">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="مختبر العلوم ف2">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>مختبر العلوم ثلاثي الأبعاد – الصف السادس (ف2)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap">
+<style>
+:root{--bg:#f4f6f5;--fg:#1c2a26;--card:#fff;--mut:#5d6b66;--bd:#d7dedb;--c:#1d9e75;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14201c;--fg:#e8f0ed;--card:#1d2c27;--mut:#9fb0aa;--bd:#33463f}}
+:root[data-theme="dark"]{--bg:#14201c;--fg:#e8f0ed;--card:#1d2c27;--mut:#9fb0aa;--bd:#33463f}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Tajawal,Tahoma,Arial,sans-serif;line-height:1.6}
+header{padding:12px 16px 2px}h1{font-size:19px;margin:0}header p{margin:0;color:var(--mut);font-size:13px}
+.row{display:flex;gap:6px;padding:5px 16px;overflow-x:auto}
+button{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:999px;padding:4px 12px;white-space:nowrap}
+button.on{background:var(--c);border-color:var(--c);color:#fff}
+main{display:grid;grid-template-columns:1.7fr 1fr;gap:12px;padding:4px 16px 16px}
+@media(max-width:800px){main{grid-template-columns:1fr}}
+#stage{position:relative;height:58vh;min-height:330px;border:1px solid var(--bd);border-radius:14px;overflow:hidden;background:radial-gradient(circle at 50% 30%,var(--card),var(--bg))}
+canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#hint{position:absolute;bottom:6px;inset-inline:0;text-align:center;font-size:12px;color:var(--mut);pointer-events:none}
+aside{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
+aside h2{font-size:16px;margin:0 0 8px}
+#parts{display:flex;flex-direction:column;gap:5px}
+#parts button{text-align:start;border-radius:10px;display:flex;gap:8px;align-items:center}
+#d{margin-top:10px;font-size:14px;min-height:60px;padding:8px 10px;border-radius:10px;background:var(--bg);border-inline-start:4px solid var(--c)}
+.bar{position:relative;height:22px;background:var(--bd);border-radius:6px;margin:5px 0;overflow:hidden}
+.bar i{position:absolute;inset-block:0;inset-inline-start:0;display:block;width:0}.bar span{position:relative;font-size:12px;padding:0 8px}
+.credit{margin:0 16px;padding:6px 12px;border-radius:10px;background:var(--card);border:1px solid var(--bd);border-inline-start:4px solid var(--c);font-size:13px;color:var(--fg)}
+footer{margin:0 16px 18px;padding:14px 16px;text-align:center;border-radius:14px;background:var(--card);border:1px solid var(--bd);font-size:14px}
+footer b{color:var(--c)}footer .s{display:block;color:var(--mut);font-size:12px;margin-top:4px}
+#splash{position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:24px;padding-top:calc(24px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));text-align:center;color:#fff;background:linear-gradient(160deg,#1d9e75,#0f6e56);animation:sp .5s ease}
+#splash img{width:132px;height:132px;border-radius:30px;box-shadow:0 8px 24px rgba(0,0,0,.28);margin-bottom:10px}
+#splash h1{font-size:22px;margin:0 0 6px}#splash .sc{font-size:19px;font-weight:700}#splash .yr{opacity:.9;margin-bottom:10px}
+#splash .cr{font-size:14px;opacity:.95}#splash b{color:#fff}
+#splash button{margin-top:22px;background:#fff;color:#0f6e56;border:0;border-radius:999px;padding:10px 38px;font-size:17px;font-weight:700}
+@keyframes sp{from{opacity:0}to{opacity:1}}
+#splash img{cursor:pointer}#splash .hint{font-size:12px;opacity:.85;margin-bottom:8px}
+#about{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(10,30,24,.72);overflow:auto}
+#about .card{position:relative;width:100%;max-width:420px;border-radius:24px;padding:26px 20px 20px;text-align:center;color:#fff;background:radial-gradient(circle at 50% 0%,#2bbf93,#0f6e56 70%);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+#about img{width:96px;height:96px;border-radius:24px;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+#about h2{font-size:21px;margin:10px 0 2px}#about .st{opacity:.92;font-size:14px}
+#about .stats{display:flex;gap:8px;justify-content:center;margin:14px 0}#about .stats div{flex:1;background:rgba(255,255,255,.16);border-radius:14px;padding:8px 4px;font-size:12px}#about .stats b{display:block;font-size:22px}
+#about ul{list-style:none;margin:0 0 12px;padding:0;text-align:start;font-size:13px}#about li{background:rgba(255,255,255,.12);border-radius:10px;padding:5px 10px;margin:4px 0}
+#about .how{font-size:12px;opacity:.92;margin-bottom:12px}
+#about .sch{border-top:1px solid rgba(255,255,255,.35);padding-top:12px;font-size:13px}#about .sch .n{font-size:17px;font-weight:700}
+#about .x{position:absolute;top:10px;inset-inline-start:10px;width:34px;height:34px;padding:0;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;border:0;font-size:18px}
+h1 #aboutBtn{width:30px;height:30px;border-radius:8px;vertical-align:middle;cursor:pointer}
+.semsw{margin:2px 16px 4px;display:flex;gap:8px}.semsw a{flex:1;text-align:center;text-decoration:none;font-size:14px;font-weight:700;padding:7px 10px;border-radius:12px;background:var(--c);color:#fff}
+#splash{overflow:auto}#splash h1{font-size:28px;line-height:1.5}#splash>div{font-size:20px;line-height:1.7}#splash .sc{font-size:26px;font-weight:700}#splash .yr{font-size:22px}#splash .cr{font-size:21px;line-height:2}#splash .pr{font-size:23px;font-weight:700;margin-top:6px}#splash button{font-size:24px;padding:12px 56px}#splash .hint{font-size:15px}
+#about .sch{font-size:17px;line-height:1.9}#about .sch .n{font-size:21px}
+body{font-size:18px}
+header h1{font-size:24px;line-height:1.5}header p{font-size:16px}
+.row{padding:6px 16px;gap:8px}button{font-size:18px;padding:8px 18px}
+.semsw a{font-size:18px;padding:10px 12px}
+#stage{height:68vh;min-height:440px}
+#hint{font-size:15px}
+aside{padding:18px}aside h2{font-size:23px;line-height:1.5;margin-bottom:10px}
+#parts{gap:8px}#parts button{font-size:18px;padding:10px 14px;border-radius:12px}
+#d{font-size:19px;line-height:1.9;padding:12px 14px;min-height:90px}
+.bar{height:30px}.bar span{font-size:16px;line-height:30px}
+</style>
+</head>
+<body>
+<div id="splash" onclick="this.remove()"><img src="icon-192.png" alt="أيقونة التطبيق" onclick="openAbout(event)"><div class="hint">اضغطي على الأيقونة لعرض البطاقة التعريفية</div><h1>مختبر العلوم ثلاثي الأبعاد</h1><div>الصف السادس • الفصل الثاني</div><div class="sc" style="margin-top:14px">🏫 مدرسة حمود الأساسية المختلطة</div><div class="yr">العام الدراسي 2026/2027</div><div class="cr">إعداد وتنفيذ المعلمة <b>مارينا البقاعين</b><br>بالتعاون مع معلمة العلوم <b>لجين الضلاعين</b></div><div class="pr">مديرة المدرسة: <b>سمية المعايطة</b></div><button type="button">ابدأ</button></div>
+<div id="about" onclick="closeAbout()"><div class="card" onclick="event.stopPropagation()"><button class="x" type="button" onclick="closeAbout()" aria-label="إغلاق">✕</button><img src="icon-192.png" alt="أيقونة التطبيق"><h2>مختبر العلوم ثلاثي الأبعاد</h2><div class="st">الصف السادس • الفصل الثاني</div><div class="stats"><div><b id="nU">4</b>وحدات</div><div><b id="nL">9</b>دروس</div><div><b id="nM">0</b>نموذجًا 3D</div></div><ul id="uList"></ul><div class="how">اسحب النموذج لتدويره • كبّره بإصبعين أو العجلة • انقر على أي جزء لتظهر معلوماته من الكتاب</div><div class="sch"><div class="n">🏫 مدرسة حمود الأساسية المختلطة</div><div>العام الدراسي 2026/2027</div><div style="margin-top:6px">مديرة المدرسة: <b>سمية المعايطة</b></div><div style="margin-top:6px">إعداد وتنفيذ المعلمة <b>مارينا البقاعين</b><br>بالتعاون مع معلمة العلوم <b>لجين الضلاعين</b></div></div></div></div>
+<header><h1><img id="aboutBtn" src="icon-192.png" alt="تعريف"> مختبر العلوم ثلاثي الأبعاد – الصف السادس / الفصل الثاني</h1><p>اختر الوحدة والدرس والنموذج، دوّر بالسحب، وانقر على أي جزء لتظهر معلوماته.</p></header>
+<div class="semsw"><a href="index.html">📗 → العودة إلى مختبر الفصل الأول</a></div>
+<div class="row" id="units"></div><div class="row" id="lessons"></div><div class="row" id="scenes"></div>
+<main>
+<div id="stage"><canvas id="c"></canvas><div id="hint">اسحب للتدوير • العجلة للتكبير • انقر على جزء</div></div>
+<aside><h2 id="t"></h2><div id="x"></div><div id="parts"></div><div id="d">انقر على جزء من النموذج لمعرفة وظيفته.</div>
+<button id="auto" class="on" style="margin-top:10px">⟳ تدوير تلقائي</button></aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const T=THREE,cv=document.getElementById('c'),$=i=>document.getElementById(i);
+const R=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+const sc=new T.Scene(),cam=new T.PerspectiveCamera(45,1,.1,100);
+sc.add(new T.HemisphereLight(0xffffff,0x778899,.95));const dl=new T.DirectionalLight(0xffffff,.8);dl.position.set(4,7,6);sc.add(dl);
+const bench=new T.Mesh(new T.CylinderGeometry(6.2,6.2,.3,48),new T.MeshStandardMaterial({color:0x9a8a74}));bench.position.y=-2.6;sc.add(bench);
+const root=new T.Group();sc.add(root);let cur=root,ups=[];
+const M=(g,c,p=[0,0,0],o,par)=>{const m=new T.Mesh(g,new T.MeshStandardMaterial({color:c,roughness:.5,...o}));m.position.set(...p);(par||cur).add(m);return m};
+const S=(r,...a)=>M(new T.SphereGeometry(r,20,14),...a),B=(w,h,d,...a)=>M(new T.BoxGeometry(w,h,d),...a),C=(r,h,...a)=>M(new T.CylinderGeometry(r,r,h,20),...a),K=(r,h,...a)=>M(new T.ConeGeometry(r,h,24),...a),Q=(a,r,...b)=>M(new T.TorusGeometry(a,r,10,48),...b);
+const G=(p=[0,0,0],par)=>{const g=new T.Group();g.position.set(...p);(par||cur).add(g);return g};
+const rn=()=>Math.random()-.5,TR={transparent:true,opacity:.25,depthWrite:false},V=a=>new T.Vector3(...a);
+function flow(c,a,b,n,r=.13,sp=.3){const A=V(a),Z=V(b),L=[];for(let i=0;i<n;i++){const m=S(r,c,a);m.t=i/n;L.push(m)}ups.push(d=>L.forEach(m=>{m.t=(m.t+d*sp)%1;m.position.lerpVectors(A,Z,m.t)}));return L}
+
+
+/* ===== الفصل الثاني: مشاهد رسومات الكتاب ===== */
+const D=(n,c,r,f,o)=>Array.from({length:n},(_,i)=>S(r,c,f(i),o));
+const BK=(x,c=0x85b7eb,o=.4)=>[C(1.1,2.6,0xcfe8f5,[x,0,0],{transparent:true,opacity:.15,depthWrite:false}),C(1.05,1.6,c,[x,-.45,0],{transparent:true,opacity:o,depthWrite:false})];
+const lim=(a,b,r,c,o={})=>{const A=V(a),Z=V(b),d=Z.clone().sub(A),m=C(r,d.length(),c,A.clone().add(Z).multiplyScalar(.5).toArray(),o);m.quaternion.setFromUnitVectors(V([0,1,0]),d.normalize());return m};
+const GL={transparent:true,opacity:.18,depthWrite:false};
+const tree=(x,z)=>[C(.1,.8,0x854f0b,[x,-1.7,z]),K(.45,1,0x3b6d11,[x,-.9,z])];
+const an=(x,z,c)=>{const g=S(.3,c,[x,-1.9,z]);g.scale.set(1.5,.9,.9);return g};
+const bounce=(cx,hw,hy,L,sp)=>{L.forEach(m=>{m.v=V([rn(),rn(),rn()]).normalize().multiplyScalar(sp)});ups.push(d=>L.forEach(m=>{const p=m.position;p.addScaledVector(m.v,d);if(Math.abs(p.x-cx)>hw)m.v.x*=-1;if(Math.abs(p.y)>hy)m.v.y*=-1;if(Math.abs(p.z)>hw)m.v.z*=-1}))};
+
+/* الوحدة 5: البيئة */
+const eco=()=>{C(6.4,.3,0xb9d98a,[0,-2.3,0]);
+ const i1=[an(-5.3,0,0xb5651d)],i2=[0,1,2,3,4].map(i=>an(-3.5+(i%3)*.65,Math.floor(i/3)*.8-.4,0xb5651d));
+ const i3=[an(-.9,-.6,0xb5651d),an(-.4,-.6,0xb5651d),an(-.8,.6,0xe8e0c8),an(-.2,.6,0xe8e0c8),...tree(.5,0)];
+ const i4=[...tree(3,-.8),...tree(5,.6),an(3.9,.4,0xb5651d),an(4.5,-.4,0xe8e0c8),S(.55,0x888780,[5.3,-1.9,-.7]),C(.8,.1,0x378add,[3.5,-2.1,1.2]),S(.5,0xfac775,[4.2,1.6,0],{emissive:0xffa500,emissiveIntensity:.8})];
+ return[['الفرد','القوة: كائن حي واحد (مثل أسد جبلي) هو أصغر مستويات التنظيم البيئي.',i1],['الجماعة الحيوية','مجموعة أفراد من النوع نفسه تعيش معًا في النظام البيئي.',i2],['المجتمع الحيوي','جماعات حيوية مختلفة تعيش معًا في النظام البيئي وترتبط بعلاقات مختلفة.',i3],['النظام البيئي','يتكون من مكونات حية (نباتات وحيوانات) وغير حية (ماء وصخور وشمس) ترتبط معًا بعلاقات.',i4]]};
+const health=()=>{C(6.4,.3,0xb9d98a,[0,-2.3,0]);
+ const fa=[B(1.8,1.4,1.2,0x888780,[-3.8,-1.4,0]),C(.28,2.2,0x5f5e5a,[-3.4,.3,0])],sm=flow(0x6b6a66,[-3.4,1.4,0],[-1.6,3,0],8,.24,.3);
+ const fw=B(4,.5,3,0x378add,[2.6,-2,0],{transparent:true,opacity:.7}),hs=[B(.8,.7,.8,0xe8e0c8,[1.6,-1.5,0]),K(.6,.5,0xb5532a,[1.6,-.9,0]),B(.8,.7,.8,0xe8e0c8,[3.4,-1.5,0]),K(.6,.5,0xb5532a,[3.4,-.9,0])];
+ return[['عوامل طبيعية (فيضان)','تؤثر في صحة النظام البيئي عوامل طبيعية كالكوارث الطبيعية: البراكين والفيضانات.',[fw,...hs]],['عوامل بشرية (مصانع)','أنشطة الإنسان المتنوعة، ومنها الصيد الجائر والرعي الجائر والتلوث، تؤثر في صحة النظام البيئي.',fa],['التلوث','إضافة مواد ضارة إلى البيئة تغير خصائصها سلبًا؛ فدخان المصانع يلوث الهواء ويهدد الكائنات الحية.',sm]]};
+const inv=()=>{const g=[],r=[];for(let i=0;i<20;i++){const red=[2,7,13,18].includes(i),m=B(.8,.06,.8,red?0xe24b4a:0x4caf50,[-2.4+(i%5)*1.2,-.5,-1.8+Math.floor(i/5)*1.2]);(red?r:g).push(m)}
+ return[['الأنواع الأصلية (أخضر)','الأنواع التي تعيش في النظام البيئي منذ القدم تسمى الأنواع الأصلية Native Species.',g],['الأنواع الغازية (أحمر)','أنواع لم تكن تعيش فيه من قبل ثم انتقلت إليه بتدخل الإنسان؛ تنافس الأنواع الأصلية على الغذاء وقد تؤدي إلى انقراضها (مثل نبات السلم).',r]]};
+const popf=()=>{C(6.4,.3,0xe0cfa0,[0,-2.3,0]);
+ const A=[S(.45,0xb5651d,[-5,-1.7,0]),S(.45,0xb5651d,[-3.6,-1.7,0])],F=D(6,0x4caf50,.12,i=>[-4.5+i*.17,-2,0]);
+ const Pa=[S(.7,0x4caf50,[-.5,-1.5,0])],Pr=D(6,0xe24b4a,.12,i=>[-.5+Math.cos(i)*.62,-1.5+Math.sin(i*1.7)*.4,Math.sin(i)*.62]);
+ const sun=S(.6,0xfac775,[4.4,1.2,0],{emissive:0xffa500,emissiveIntensity:.9}),dr=B(2.6,.2,2,0x9a6b3a,[4.4,-2,0]);
+ ups.push((d,t)=>{A[0].position.x=-5+Math.sin(t*4)*.2;A[1].position.x=-3.6-Math.sin(t*4)*.2});
+ return[['التنافس','علاقة بين أفراد النوع الواحد أو بين أنواع مختلفة على المصادر المتاحة (ماء وغذاء)؛ فيقل حجم الجماعة عند نقصها.',[...A,...F]],['التطفل','علاقة بين كائنين حيين أحدهما يستفيد والآخر يتضرر (مثل الدودة على نبات البندورة)؛ يقل حجم الجماعة المصابة.',[...Pa,...Pr]],['الطقس','ارتفاع درجات الحرارة أو انخفاضها الشديد قد يسبب موت بعض الأفراد فيقل حجم الجماعة.',[sun,dr]]]};
+const dens=()=>{const s1=B(3,.1,3,0xe8e0c8,[-3,-1.5,0]),s2=B(3,.1,3,0xe8e0c8,[3,-1.5,0]);
+ const hi=D(14,0x854f0b,.12,i=>[-4.2+(i%4)*.8,-1.35,-1.1+Math.floor(i/4)*.75]),lo=D(4,0x854f0b,.12,i=>[2+(i%2)*1.6,-1.35,-.7+Math.floor(i/2)*1.4]);
+ return[['مربع كثافة عالية','كثافة الجماعة الحيوية = عدد أفراد النوع ÷ المساحة؛ تزداد بزيادة عدد الأفراد في المساحة نفسها.',[s1,...hi]],['مربع كثافة منخفضة','المساحة نفسها لكن عدد أفراد أقل؛ فكثافتها أقل. (مثال: 150 شجرة بلوط في كل km² تعني كثافة 150 شجرة/km²).',[s2,...lo]]]};
+
+/* الوحدة 6: المخاليط */
+const pure=()=>{const su=[0,1,2,3].map(i=>B(.5,.5,.5,0xffffff,[-5+(i%2)*.55,-1.8+Math.floor(i/2)*.55,0]));
+ const au=B(1.4,.55,.7,0xf0c040,[-2.4,-1.7,0],{metalness:.85,roughness:.3}),di=M(new T.OctahedronGeometry(.8),0xb5d4f4,[.2,-1.3,0],{transparent:true,opacity:.8});
+ const mx=D(30,0x888780,.17,i=>[2.6+rn()*2.4,-1.9+Math.random()*1.2,rn()*1.6]);mx.forEach((m,i)=>m.material.color.setHex([0x888780,0xd9b77a,0xb5d4f4,0xb5651d][i%4]));
+ return[['السكر (مادة نقية)','المادة النقية تتكون من نوع واحد من المادة، وتركيبها محدد وثابت وخصائصها لا تتغير.',su],['الذهب (مادة نقية)','من الأمثلة على المواد النقية أيضًا: النحاس والحديد والماس والذهب.',[au]],['الألماس (مادة نقية)','مادة نقية ذات تركيب محدد وخصائص كيميائية لا تتغير.',[di]],['الخرسانة (مخلوط)','المخلوط مادتان أو أكثر مختلطتان فيزيائيًا بكميات غير محددة، مثل الخرسانة (حصى ورمل وإسمنت وماء).',mx]]};
+const soln=()=>{const b1=BK(-3.5),b2=BK(3.5,0x7a4a2a,.55);
+ const W=D(26,0x4aa0e0,.1,i=>[-3.5+rn()*1.5,-1.2+Math.random()*1.5,rn()*1.5],{transparent:true,opacity:.6});
+ const su=D(8,0xffffff,.13,i=>[-3.5+rn()*1.2,1.6,rn()*1]);su.forEach((m,i)=>m.ph=i/8);
+ ups.push((d,t)=>su.forEach(m=>{const k=(t*.2+m.ph)%1;m.position.y=1.7-k*3;m.scale.setScalar(Math.max(.05,1-k*1.2))}));
+ const bu=D(12,0xffffff,.09,i=>[3.5+rn()*1.2,-1.2,rn()*1]);bu.forEach((m,i)=>m.ph=i/12);
+ ups.push((d,t)=>bu.forEach(m=>{const k=(t*.25+m.ph)%1;m.position.y=-1.2+k*2.2}));
+ return[['المذيب (الماء)','المادة التي يذوب فيها المذاب تسمى المذيب Solvent، والماء من أكثر المذيبات شهرة.',[...b1,...W]],['المذاب (السكر)','المادة التي تذوب في المذيب تسمى المذاب Solute. محلول (صلب – سائل): السكر مع الماء، لا يتغير تركيب السكر والماء بل يمتزجان.',su],['محلول غاز – سائل','يتكون من غاز مذاب في سائل، مثل ثاني أكسيد الكربون المذاب في المشروبات الغازية.',[...b2,...bu]]]};
+const sat=()=>{const b1=BK(-3.5,0x9fd0f0,.35),b2=BK(3.5,0x9fd0f0,.35);
+ const ds=D(8,0xfff4c0,.07,i=>[-3.5+rn()*1.4,-1.2+Math.random()*1.3,rn()*1.4]);const cr=D(22,0xffffff,.17,i=>[3.5+rn()*1.5,-1.65+Math.floor(i/9)*.25,rn()*1.4]);cr.forEach(m=>m.scale.set(1,.7,1));
+ const dd=D(6,0xfff4c0,.07,i=>[3.5+rn()*1.4,-.7+Math.random()*.9,rn()*1.4]);
+ return[['محلول غير مشبع','عند إضافة ملعقة سكر واحدة وتحريكها تذوب بالكامل؛ لا يزال بإمكان المحلول إذابة كمية إضافية.',[...b1,...ds]],['محلول مشبع','مع الاستمرار في إضافة السكر يصل الماء إلى حد معين فلا يذوب المزيد ويترسب في القاع؛ المحلول المشبع Saturated لا يمكنه إذابة المزيد عند درجة الحرارة نفسها.',[...b2,...cr,...dd]]]};
+const conc=()=>{const a=BK(-3,0xe8b0b0,.4),b=BK(3,0xc02030,.8);
+ const d1=D(3,0xc02030,.1,i=>[-3+rn()*.6,-.5+rn()*.9,rn()*.5]),d2=D(18,0x801020,.1,i=>[3+rn()*1.3,-1+Math.random()*1.3,rn()*1.2]);
+ return[['محلول مخفف (تركيز أقل)','التركيز Concentration: نسبة كتلة المادة المذابة إلى حجم المذيب. بإضافة قطرات قليلة من الصبغة يكون اللون فاتحًا والتركيز أقل.',[...a,...d1]],['محلول مركز (تركيز أكبر)','عند إضافة المزيد من الصبغة يصبح اللون أغمق ويزداد تركيز المحلول.',[...b,...d2]]]};
+const magnet=()=>{const pl=B(6,.15,3,0xe8e6dc,[0,-2,0]),mg=[B(.5,1.4,.5,0xe24b4a,[-.5,1.6,0]),B(.5,1.4,.5,0x378add,[.5,1.6,0]),B(1.5,.4,.5,0x888780,[0,2.4,0])];
+ const fl=D(16,0x2c2c2a,.1,i=>[-2.8+i*.35,-1.8,rn()*.8]);fl.forEach((m,i)=>{m.ph=i/16;m.x0=m.position.x});
+ const fo=D(40,0xffffff,.1,i=>[-2.6+rn()*5.2,-1.8,rn()*1.2],{roughness:.9});
+ ups.push((d,t)=>fl.forEach(m=>{const k=Math.max(0,Math.sin((t*.5+m.ph)*3.1))*.9;m.position.y=-1.8+k*3.2;m.position.x=m.x0*(1-k*.8)}));
+ return[['المغناطيس','يستخدم لفصل برادة الحديد عن دقيق القمح؛ ويفصل الحديد والفولاذ عن المواد الأخرى في الخردة.',[...mg,pl]],['برادة الحديد','تنجذب إلى المغناطيس لأنها من الحديد.',fl],['دقيق القمح','لا ينجذب إلى المغناطيس فيبقى مكانه.',fo]]};
+const sieve=()=>{const rg=Q(1.9,.1,0xb87333,[0,1,0]);rg.rotation.x=Math.PI/2;const mesh=C(1.9,.03,0x888780,[0,1,0],{transparent:true,opacity:.45});
+ const big=D(6,0xa0522d,.3,i=>[-1+i%3*.9,1.35,-.4+Math.floor(i/3)*.8]),sm=D(20,0xf0c040,.1,i=>[rn()*1.6,1.2-Math.random()*2.6,rn()*1.6]);
+ sm.forEach((m,i)=>m.ph=i/20);ups.push((d,t)=>sm.forEach(m=>{const k=(t*.35+m.ph)%1;m.position.y=1.3-k*3.2}));
+ return[['المنخل (الغربال)','أداة مكونة من شبكة ذات ثقوب في حجومها؛ يعتمد على اختلاف حجوم الجسيمات في المخلوط.',[rg,mesh]],['الجسيمات الكبيرة','تبقى فوق المنخل لأنها لا تعبر الثقوب (مثل الحصى).',big],['الجسيمات الصغيرة','تعبر الثقوب وتسقط (مثل فصل دقيق القمح عن قشور القمح أو الرمل الناعم عن الحصى).',sm]]};
+const filt=()=>{const fn=K(1.5,1.9,0xcfe8f5,[0,1.2,0],GL);fn.rotation.x=Math.PI;const pa=K(1.3,1.7,0xf5f0e0,[0,1.2,0],{transparent:true,opacity:.75});pa.rotation.x=Math.PI;
+ const bk=BK(0,0x9fd0f0,.3);bk.forEach(m=>m.position.y-=1.4);const rs=D(12,0x8a6a3a,.1,i=>[rn()*1.1,1.5+rn()*.2,rn()*1.1]);
+ const dr=D(5,0x6aa8e8,.08,i=>[0,0,0]);dr.forEach((m,i)=>m.ph=i/5);ups.push((d,t)=>dr.forEach(m=>{const k=(t*.5+m.ph)%1;m.position.set(0,.3-k*2.1,0)}));
+ return[['ورقة الترشيح','تسمح للسائل بالنفاذ من ثقوبها وتحتجز المواد غير الذائبة ذات الحبيبات الكبيرة.',[fn,pa]],['الراسب (ناتج الترشيح)','المادة الصلبة المحتجزة على الورقة، مثل رواسب القهوة أو حبات الأرز عند غسله.',rs],['الراشح','السائل النافذ عبر الورقة والثقوب، مثل مشروب القهوة.',[...dr,...bk]]]};
+const evap=()=>{const bk=BK(0,0x9fd0f0,.4),tp=[lim([-1.3,-1.3,0],[-1.7,-2.4,0],.05,0x5f5e5a),lim([1.3,-1.3,0],[1.7,-2.4,0],.05,0x5f5e5a),B(3,.1,1.4,0x5f5e5a,[0,-1.35,0])];
+ const fl=K(.35,.9,0xff6a1a,[0,-1.95,0],{emissive:0xff4500,emissiveIntensity:.9}),vp=flow(0xffffff,[0,.4,0],[0,2.8,0],8,.1,.25),cr=D(10,0xffffff,.13,i=>[rn()*1.4,-1.1,rn()*1]);
+ ups.push((d,t)=>fl.scale.y=1+Math.sin(t*12)*.15);
+ return[['المحلول الملحي','التبخير: يُسخَّن المحلول فتتبخر المادة السائلة (الماء) وتبقى المادة الصلبة المذابة (الملح).',bk],['اللهب (مصدر الحرارة)','التسخين يبخّر الماء. التبلور: عند تبريد محلول مشبع ساخن تتكون بلورات المادة الصلبة.',[fl,...tp]],['بخار الماء','يتصاعد المذيب ويتبقى الملح (كما في استخلاص الملح من مياه البحر).',vp],['بلورات الملح','المادة الصلبة التي تبقى في القاع بعد التبخر.',cr]]};
+const dist=()=>{const fk=S(.95,0xcfe8f5,[-4,-.4,0],GL),lq=S(.9,0x6aa8e8,[-4,-.8,0],{transparent:true,opacity:.35}),nk=lim([-3.7,.3,0],[-3.2,.8,0],.2,0xcfe8f5,GL);
+ const cd=lim([-3.2,.8,0],[1.6,-.7,0],.26,0xcfe8f5,GL),jk=lim([-2.4,.55,0],[.8,-.45,0],.46,0x85b7eb,{transparent:true,opacity:.22,depthWrite:false});
+ const rc=S(.7,0xcfe8f5,[2.3,-1.6,0],GL),dl=S(.5,0x6aa8e8,[2.3,-1.9,0],{transparent:true,opacity:.5}),fl=K(.35,.8,0xff6a1a,[-4,-2.2,0],{emissive:0xff4500,emissiveIntensity:.9}),th=lim([-4,.6,0],[-4,2.2,0],.06,0xe24b4a);
+ const vp=flow(0xffffff,[-3.7,.5,0],[1.6,-.7,0],8,.1,.4),wi=flow(0x378add,[.8,-.9,.5],[-2.4,.1,.5],4,.1,.3);
+ return[['دورق التقطير','يوضع فيه المحلول (مثل مياه البحر) ويُسخَّن حتى الغليان.',[fk,lq,nk]],['اللهب','مصدر الحرارة الذي يسخن المحلول حتى يغلي.',[fl]],['مقياس الحرارة','يقيس درجة غليان السائل (درجة غليان المادة التي تتبخر).',[th]],['المكثّف','البخار (مادة لها درجة غليان أقل) يمر عبر الأنبوب فيبرد ويتحول مرة أخرى إلى سائل (يتكثف).',[cd,...vp]],['الماء البارد','يمر حول أنبوب التكثيف ويحوله إلى سائل.',[jk,...wi]],['وعاء الاستقبال','يجمع السائل المقطّر؛ تُستخدم الطريقة في تحلية مياه البحر لتصبح صالحة للشرب.',[rc,dl]]]};
+
+/* الوحدة 7: الصوت */
+const waves=()=>{const N=30,tr=D(N,0x1d9e75,.14,i=>[-5+i*.34,1.3,0]),lg=D(44,0xd85a30,.1,i=>[-5+i*.24,-1.3,0]);
+ tr.forEach((m,i)=>m.x0=-5+i*.34);lg.forEach((m,i)=>m.x0=-5+i*.24);
+ const ar=[K(.18,.5,0xe24b4a,[5.7,1.3,0]),K(.18,.5,0xe24b4a,[5.7,-1.3,0])];ar.forEach(a=>a.rotation.z=-Math.PI/2);
+ ups.push((d,t)=>{tr.forEach(m=>m.position.y=1.3+Math.sin(m.x0*1.3-t*3)*.75);lg.forEach(m=>m.position.x=m.x0+Math.sin(m.x0*2.2-t*3)*.11)});
+ return[['موجة مستعرضة','اتجاه انتشارها عمودي على اتجاه اهتزاز جسيمات الوسط (مثل حبل يُحرَّك طرفه لأعلى ولأسفل). أعلى نقطة قمة الموجة Wave Crest وأخفض نقطة قاع الموجة Wave Trough.',tr],['موجة طولية','اتجاه انتشارها موازٍ لاتجاه اهتزاز جسيمات الوسط (مثل النابض). مناطق التقارب تضاغط Compression ومناطق التباعد تخلخل Expansion.',lg],['اتجاه الانتشار','الموجة Wave اضطراب أو اهتزاز تنتقل فيه الطاقة من مكان إلى آخر.',ar]]};
+const emw=()=>{const sn=S(.9,0xfac775,[-5,1.3,0],{emissive:0xffa500,emissiveIntensity:.9}),ea=S(.6,0x2a7ab8,[5.2,1.3,0]);
+ const em=D(30,0xffd34d,.1,i=>[-4+i*.28,1.3,0]);em.forEach((m,i)=>m.x0=-4+i*.28);
+ const me=D(40,0x4aa0e0,.12,i=>[-4.5+(i%20)*.45,-1.9+Math.floor(i/20)*.5,0]);me.forEach((m,i)=>{m.x0=m.position.x;m.y0=m.position.y});
+ ups.push((d,t)=>{em.forEach(m=>m.position.y=1.3+Math.sin(m.x0*2-t*4)*.45);me.forEach(m=>m.position.y=m.y0+Math.sin(m.x0*1.5-t*3)*.28)});
+ return[['الشمس (مصدر)','ضوء الشمس موجات كهرومغناطيسية.',[sn]],['الأرض','يصل إليها ضوء الشمس عبر الفضاء الفارغ تقريبًا.',[ea]],['موجة كهرومغناطيسية','لا تحتاج إلى وسط ناقل؛ تنتقل في الهواء والفراغ والمواد الشفافة (الضوء مثال).',em],['موجة ميكانيكية','تحتاج إلى وسط ناقل (هواء، ماء، أرض) تنتقل فيه باهتزاز جسيماته، مثل موجات الزلازل والصوت.',me]]};
+const sound=()=>{const bx=B(1.5,2.2,1.4,0x5f5e5a,[-5.2,0,0]),cn=C(.3,.5,0xe8e6dc,[-4.3,0,0]);cn.rotation.z=Math.PI/2;
+ const ar=[];for(let r=0;r<3;r++)for(let i=0;i<22;i++){const m=S(.09,0x4aa0e0,[-3.4+i*.3,-.7+r*.7,0]);m.x0=m.position.x;ar.push(m)}
+ const ear=S(.55,0xf0b090,[3.8,0,0]);ear.scale.set(.5,1,.8);
+ ups.push((d,t)=>{cn.position.x=-4.3+Math.sin(t*14)*.08;ar.forEach(m=>m.position.x=m.x0+Math.sin(m.x0*3-t*5)*.12)});
+ return[['مصدر الصوت','الأجسام المهتزة (مثل مكبر الصوت) تولد الصوت وتحرك الهواء المحيط بها.',[bx,cn]],['جسيمات الهواء','تنتقل الاهتزازات على شكل موجات طولية تتكون من تضاغطات وتخلخلات في الهواء.',ar],['الأذن','تستقبل الموجات الصوتية وتنقلها إلى الدماغ ليفسرها صوتًا.',[ear]]]};
+const ear=()=>{const pn=Q(.95,.2,0xf0b090,[-4.2,0,0]);pn.rotation.y=Math.PI/2;
+ const cn=C(.25,2.3,0xd49070,[-2.7,0,0]);cn.rotation.z=Math.PI/2;const dm=C(.6,.08,0xf5e6c8,[-1.5,0,0]);dm.rotation.z=Math.PI/2;
+ const os=[S(.15,0xe8e6dc,[-1,.2,0]),S(.13,0xe8e6dc,[-.6,.3,0]),S(.11,0xe8e6dc,[-.25,.25,0])];
+ const pts=[];for(let i=0;i<=60;i++){const a=i/60*Math.PI*4;pts.push(V([.3+Math.cos(a)*(.5-i*.006),-.2-i*.012+Math.sin(a)*(.5-i*.006),0]))}const co=M(new T.TubeGeometry(new T.CatmullRomCurve3(pts),80,.1,8),0xe0a0a0,[0,0,0]);
+ const ne=lim([1.1,-.2,0],[2.8,.4,0],.1,0xf5d76e),br=S(1.1,0xe8a0b0,[3.9,.6,0]);br.scale.set(1.1,.9,.9);const wv=flow(0x378add,[-6.2,0,0],[-1.6,0,0],7,.1,.4);
+ return[['الأذن الخارجية','تجمع الموجات الصوتية وتوجهها إلى قناة الأذن.',[pn]],['القناة السمعية','تصل الاهتزازات عبر قناة تسمى القناة السمعية إلى غشاء رقيق.',[cn,...wv]],['غشاء طبلة الأذن','غشاء رقيق داخل الأذن يهتز بتأثير الاهتزازات؛ ثم تنتقل الاهتزازات إلى أجزاء أخرى في الأذن.',[dm]],['عظيمات الأذن والقوقعة','تنقل الاهتزازات وتحولها إلى إشارات داخل الأذن الداخلية (القوقعة).',[...os,co]],['العصب السمعي','ينقل الإشارات من الأذن إلى الدماغ.',[ne]],['الدماغ','يفسر الإشارات فنُدرك الأصوات ونسمعها.',[br]]]};
+const loud=()=>{const row=(y,A,k,c)=>{const L=D(36,c,.09,i=>[-4+i*.24,y,0]);L.forEach((m,i)=>m.x0=-4+i*.24);ups.push((d,t)=>L.forEach(m=>m.position.y=y+Math.sin(m.x0*k-t*4)*A));return L};
+ const a1=row(2,.7,1.2,0xe24b4a),a2=row(1,.2,1.2,0xe24b4a),f1=row(-.5,.35,1,0x378add),f2=row(-1.8,.35,3,0x378add);
+ return[['شدة صوت عالية (سعة كبيرة)','تعتمد شدة الصوت على مقدار الطاقة التي تنقلها الموجات؛ تزداد بزيادة سعة الاهتزاز (مثل صوت المثقاب والطبل).',a1],['شدة صوت منخفضة (سعة صغيرة)','صوت منخفض الشدة مثل صوت الفرخ (صوص). يمكن حماية الأذن من الأصوات العالية بسدادات الأذن.',a2],['تردد منخفض (صوت غليظ)','درجة الصوت Pitch تحددها عدد الموجات في الثانية (التردد Frequency، يقاس بالهرتز Hz)؛ الأصوات الغليظة ترددها صغير (صوت البقرة).',f1],['تردد عالٍ (صوت حاد)','الأصوات الحادة ترددها كبير (صوت العصفور).',f2]]};
+const ultra=()=>{const bt=S(.4,0x6b4a2b,[-4.3,.3,0]);bt.scale.set(1,1.2,.8);const wg=[1,-1].map(s=>{const w=B(1.1,.08,.7,0x4a3a2a,[-4.3,.3,s*.7]);w.rotation.x=s*.3;return w});
+ const ins=S(.22,0xf0c040,[3.6,-.3,0]),R=[],E=[];for(let i=0;i<4;i++){const q=Q(.6,.03,0x4aa0e0,[-3.8,.3,0]);q.rotation.y=Math.PI/2;q.ph=i/4;R.push(q);const e=Q(.6,.03,0xe24b4a,[3.4,-.3,0]);e.rotation.y=Math.PI/2;e.ph=i/4;E.push(e)}
+ ups.push((d,t)=>{wg.forEach((w,i)=>w.rotation.x=(i?-1:1)*(.3+Math.sin(t*10)*.3));R.forEach(q=>{const k=(t*.35+q.ph)%1;q.position.x=-3.8+k*7;q.scale.setScalar(.5+k*1.6);q.material.opacity=1-k;q.material.transparent=true});E.forEach(q=>{const k=(t*.35+q.ph)%1;q.position.x=3.4-k*7;q.scale.setScalar(.5+k*1.6);q.material.opacity=.8*(1-k);q.material.transparent=true})});
+ return[['الخفاش','يستخدم الموجات فوق الصوتية لتحديد مواقع الفرائس وتفادي العوائق.',[bt,...wg]],['موجات فوق صوتية (انبعاث)','تردداتها أعلى من 20000 Hz؛ لا يسمعها الإنسان الذي يسمع الأصوات بين 20 و20000 Hz.',R],['الحشرة (الفريسة)','ينعكس عليها الصوت.',[ins]],['الصدى (انعكاس)','يعود الصدى إلى الخفاش ليحدد موقع الجسم. وتُستخدم الموجات فوق الصوتية في التصوير الطبي (فحص الجنين) وفي غواصات السونار.',E]]};
+
+/* الوحدة 8: الحرارة */
+const tmp=()=>{const g=[[-4.5,0xe24b4a,.9,18],[0,0x378add,.2,18],[4.7,0x378add,.2,34]];const parts=[];
+ g.forEach(([x,c,sp,n],j)=>{const bk=BK(x,c,.2);if(j==2){bk[0].scale.set(1.4,1,1.4);bk[1].scale.set(1.4,1,1.4)}const L=D(n,c,.09,i=>[x+rn()*(j==2?1.7:1),-1.2+Math.random()*1.3,rn()*(j==2?1.7:1)]);bounce(x,j==2?.95:.55,.9,L,sp*3);parts.push([...bk,...L])});
+ return[['كوب شاي ساخن','درجة الحرارة Temperature هي متوسط طاقة حركة جسيمات المادة؛ جسيمات الساخن تتحرك أسرع.',parts[0]],['كوب ماء بارد','جسيمات أبطأ حركة ودرجة حرارة أقل.',parts[1]],['إبريق ماء بارد (كمية أكبر)','الطاقة الحرارية مجموع طاقة حركة جسيمات المادة؛ تعتمد على الكمية وعلى درجة الحرارة، فالإبريق أكثر طاقة حرارية من الكأس رغم تساوي درجتيهما (8°C).',parts[2]]]};
+const cond=()=>{const R=[];for(let r=0;r<3;r++)for(let i=0;i<12;i++){const m=S(.28,0xe8e6dc,[-3.7+i*.68,-1+r*.9,0]);m.ix=i;m.bx=m.position.x;R.push(m)}
+ const fl=K(.5,1.2,0xff6a1a,[5.2,-.1,0],{emissive:0xff4500,emissiveIntensity:.9});fl.rotation.z=Math.PI/2;
+ const cl=new T.Color();ups.push((d,t)=>{const f=(t*.35)%1.3*12;R.forEach(m=>{const k=Math.min(1,Math.max(0,(f-(11-m.ix))/4));m.material.color.setRGB(.9,.9-.7*k,.9-.8*k);m.position.x=m.bx+Math.sin(t*20+m.ix)*.04*k*3})});
+ return[['جسيمات المادة الصلبة','التوصيل الحراري: تنتقل الحرارة من جسيم إلى آخر في المادة نفسها بين جسيمين متلاصقين؛ فتزداد طاقة حركة الجسيمات المجاورة.',R],['مصدر الحرارة','كما ترتفع حرارة ملعقة داخل وعاء طبخ ساخن ثم تنتقل الحرارة إلى اليد. المواد الموصلة (الفلزات) تنقل الحرارة جيدًا والعازلة (الخشب والبلاستيك) سيئة التوصيل.',[fl]]]};
+const conv=()=>{const bx=B(4.6,3.4,2,0xcfe8f5,[0,0,0],GL),fl=K(.45,1,0xff6a1a,[-1.9,-2.2,0],{emissive:0xff4500,emissiveIntensity:.9}),st=B(1.2,.1,1,0x5f5e5a,[-1.9,-1.78,0]);
+ const P=D(30,0xe24b4a,.12,i=>[0,0,0]);P.forEach((m,i)=>m.ph=i/30);
+ ups.push((d,t)=>{fl.scale.y=1+Math.sin(t*12)*.12;P.forEach(m=>{const s=((t*.1+m.ph)%1)*4,hw=2,hh=1.4;let x,y;if(s<1){x=-hw+.4;y=-hh+s*2*hh}else if(s<2){x=-hw+.4+(s-1)*(2*hw-.8);y=hh}else if(s<3){x=hw-.4;y=hh-(s-2)*2*hh}else{x=hw-.4-(s-3)*(2*hw-.8);y=-hh}m.position.set(x,y,0);m.material.color.setRGB(x<0?.9:.2,.3,x<0?.2:.9)})});
+ return[['مصدر الحرارة','يسخن الماء في أسفل الوعاء.',[fl,st]],['تيار الحمل','الحمل Convection: انتقال الحرارة في المواد السائلة والغازية على شكل تيارات؛ الماء الساخن يصبح أقل كثافة فيرتفع (أحمر) والبارد يهبط (أزرق) وتتكرر الدورة.',P],['الوعاء','إبريق/وعاء الماء الذي يسخن مصدرًا للحرارة في الأسفل.',[bx]]]};
+const rad=()=>{const lp=S(.9,0xfac775,[-4.8,.5,0],{emissive:0xffa500,emissiveIntensity:.95}),hd=B(1,1.6,.8,0xf0b090,[4.8,.5,0]);
+ const ry=flow(0xffd34d,[-3.9,.5,0],[4,.5,0],9,.12,.35),ry2=flow(0xffd34d,[-3.9,1.4,0],[4,1,0],6,.1,.3),ry3=flow(0xffd34d,[-3.9,-.4,0],[4,0,0],6,.1,.3);
+ return[['المصدر (مصباح/الشمس)','الإشعاع Radiation: انتقال الحرارة بواسطة الموجات الكهرومغناطيسية، وهي الطريقة الوحيدة لانتقال الحرارة في الفراغ.',[lp]],['الأشعة','بالإشعاع تصل طاقة الشمس إلى الأرض؛ تنتقل الأشعة بدون وسط وتعبر الزجاج.',[...ry,...ry2,...ry3]],['الجسم المستقبل','يمتص الموجات فتزداد طاقة حركة جسيماته ويسخن (كاليد قرب المصباح).',[hd]]]};
+const room=()=>{const rm=B(8,4.2,3,0xcfe8f5,[0,0,0],{transparent:true,opacity:.1,depthWrite:false}),ra=B(.5,1.2,1.4,0xe24b4a,[-3.5,-1.2,0]);
+ const hw=[...flow(0xe24b4a,[-3.1,-.8,0],[-3.1,1.7,0],6,.12,.3),...flow(0xe24b4a,[-3.1,1.7,0],[2,1.7,0],8,.12,.3)],cw=[...flow(0x4a8fe0,[3.2,1.7,0],[3.2,-1.7,0],6,.12,.3),...flow(0x4a8fe0,[3.2,-1.8,0],[-2.6,-1.8,0],8,.12,.3)];
+ const ac=B(1.8,.5,.8,0xf1efe8,[2.3,1.9,0]),ca=flow(0x80b8ff,[2.3,1.5,0],[2.3,-.8,0],6,.13,.3);
+ return[['المشعّ الحراري (المدفأة)','يسخن الهواء المحيط بالإشعاع والتوصيل؛ فينتقل الهواء الساخن بالحمل ويرتفع.',[ra]],['الهواء الساخن','يرتفع نحو أعلى الغرفة ثم يتحرك ويبرد (تيارات حمل) ويحل محله هواء بارد.',hw],['الهواء البارد','يهبط ويعود إلى المشعّ ليسخن من جديد فتتدفأ الغرفة كاملة.',cw],['مكيّف الهواء','يدفع الهواء البارد نحو الأسفل؛ يحل الهواء الساخن الأخف محله فيبرد جو الغرفة بتيارات حمل.',[ac,...ca]]]};
+const insul=()=>{const w=[B(.9,3.6,2.6,0xb5532a,[-.6,0,0]),B(1,3.6,2.6,0xf0d070,[.4,0,0]),B(.4,3.6,2.6,0xe8e0c8,[1.2,0,0])];
+ const hot=flow(0xe24b4a,[-5,0,0],[-1.2,0,0],10,.14,.3),hot2=flow(0xe24b4a,[-5,1.2,0],[-1.2,1.2,0],8,.12,.3),sl=flow(0xe24b4a,[1.5,0,0],[4.6,0,0],2,.1,.08);
+ return[['طبقة الطوب','جدار المنزل: تنتقل خلاله الحرارة من الداخل الدافئ إلى الخارج البارد في الشتاء.',[w[0],w[2]]],['طبقة العزل (الصوف الصخري)','العزل الحراري Thermal Insulation: إضافة طبقة من مادة عازلة للحرارة (كالصوف الصخري) إلى الجدران لتقليل انتقال الحرارة وترشيد استهلاك الطاقة.',[w[1]]],['الحرارة داخل المنزل','تحاول الانتقال إلى الخارج فتُعاق بالطبقة العازلة، وتُلف الأنابيب أيضًا بمادة عازلة لحمايتها من فقدان الحرارة.',[...hot,...hot2,...sl]]]};
+
+/* الوحدة 9: علوم الفضاء */
+const gal=()=>{const sp=G([-4.3,0,0]),a=[],b=[],c=[],sunm=[];
+ for(let i=0;i<110;i++){const arm=i%2,r=.15+(i/110)*1.6,th=r*2.4+arm*Math.PI;a.push(S(.05,i<12?0xfff4c0:0xcfe0ff,[Math.cos(th)*r,rn()*.12,Math.sin(th)*r],{},sp))}
+ const sn=S(.1,0xfac775,[Math.cos(2.4*1.1+Math.PI)*1.1,0,Math.sin(2.4*1.1+Math.PI)*1.1],{emissive:0xffa500,emissiveIntensity:1},sp);
+ for(let i=0;i<80;i++){const u=Math.random()*6.28,v=Math.acos(2*Math.random()-1),r=Math.pow(Math.random(),.5);b.push(S(.05,0xffb870,[.5+Math.sin(v)*Math.cos(u)*1.4*r,Math.cos(v)*.9*r,Math.sin(v)*Math.sin(u)*.9*r]))}
+ for(let i=0;i<60;i++)c.push(S(.05,0x9fd0ff,[4.4+rn()*2.2+Math.sin(i)*.4,rn()*1.8,rn()*1.8]));
+ ups.push(d=>sp.rotation.y-=d*.25);sp.rotation.x=.9;
+ return[['مجرة حلزونية (درب التبانة)','المجرة Galaxy تجمّع هائل من النجوم والكواكب والغاز والغبار تربطها الجاذبية. للمجرة الحلزونية أذرع ملتفة حول مركزها، ودرب التبانة منها.',a],['موقع الشمس','تقع الشمس في إحدى أذرع مجرة درب التبانة بعيدًا عن مركزها، ونظامنا الشمسي ينتمي إليها.',[sn]],['مجرة إهليلجية (بيضوية)','تحتوي كميات قليلة من الغاز والغبار وأقدم النجوم عمرًا، وشكلها بيضوي.',b],['مجرة غير منتظمة','ليس لها شكل محدد، وتحتوي كمية كبيرة من الغاز والغبار، وتمتاز بصغر حجمها وقلة نجومها.',c]]};
+const stars=()=>{const st=[[-4.3,1.1,0xe24b4a,'نجوم حمراء','أقل النجوم حرارة، درجة حرارتها منخفضة.'],[0,.8,0xfac775,'نجوم صفراء (كالشمس)','حرارتها متوسطة؛ الشمس نجم أصفر قريب منا.'],[4.3,.6,0x6aa8ff,'نجوم زرقاء','الأعلى حرارة بين النجوم.']];
+ const r=st.map(([x,s,c])=>S(s,c,[x,0,0],{emissive:c,emissiveIntensity:.8}));
+ return st.map((s,i)=>[s[3],s[4]+' يختلف لون النجم باختلاف درجة حرارته، وتختلف النجوم في حجومها.',[r[i]]])};
+const solar=()=>{const sn=S(1.3,0xfac775,[0,0,0],{emissive:0xffa500,emissiveIntensity:.9});
+ const PL=[['عطارد',.16,1.6,0x9a9a9a,1.6,'أقرب كواكب النظام الشمسي إلى الشمس وأصغرها حجمًا.'],['الزهرة',.26,2.2,0xe8c07a,1.2,'ثاني الكواكب بعدًا عن الشمس.'],['الأرض',.28,2.9,0x2a7ab8,1,'كوكبنا، ولها قمر واحد.'],['المريخ',.2,3.5,0xc1440e,.8,'الكوكب الأحمر؛ تستكشف سطحه مركبات.'],['المشتري',.65,4.4,0xd2a679,.55,'أكبر كواكب النظام الشمسي وله أقمار عديدة.'],['زحل',.55,5.3,0xe3d29a,.4,'له حلقات واضحة حوله.'],['أورانوس',.38,6,0x7de3e8,.3,'كوكب بعيد عن الشمس.'],['نبتون',.36,6.6,0x3f54ba,.25,'أبعد كواكب النظام الشمسي عن الشمس.']];
+ const R=[],orb=[];PL.forEach(([n,r,d,c,sp,tx],i)=>{d*=.88;const q=Q(d,.012,0x777777,[0,0,0]);q.rotation.x=Math.PI/2;orb.push(q);const g=G();const p=S(r,c,[d,0,0],{},g);if(n=='زحل'){const rg=Q(.85,.06,0xcdb98a,[d,0,0],{},g);rg.rotation.x=Math.PI/2.4;p.ring=rg}R.push([n,tx,[p,...(p.ring?[p.ring]:[])],g,sp])});
+ const mn=S(.08,0xdddddd,[0,0,0]);const eg=R[2][3];mn.position.set(3,0,0);
+ ups.push((dt,t)=>{R.forEach(([n,tx,ms,g,sp])=>g.rotation.y=-t*sp*.4);mn.position.set(2.55*Math.cos(t*.4)+.5*Math.cos(t*2),0,2.55*Math.sin(t*.4)+.5*Math.sin(t*2));});
+ return[['الشمس','النجم الوحيد في النظام الشمسي ويقع في مركزه؛ تدور حولها الأجرام السماوية كلها وهي مصدر الضوء والحرارة (غازاتها الهيدروجين والهيليوم).',[sn]],...R.map(([n,tx,ms])=>['كوكب '+n,tx+' يدور حول الشمس ضمن النظام الشمسي (الرسم ليس بأبعاد حقيقية).',ms]),['القمر','الأقمار أجرام سماوية معتمة تدور حول الكواكب؛ للأرض قمر واحد وللمشتري أقمار عدة.',[mn]],['مدارات الكواكب','مسارات تدور فيها الكواكب حول الشمس.',orb]]};
+const exo=()=>{const st=S(1.3,0xffd9a0,[0,0,0],{emissive:0xffa050,emissiveIntensity:.8}),pl=S(.55,0xc1440e,[3.2,0,0]),ob=Q(3.2,.015,0x777777,[0,0,0]);ob.rotation.x=Math.PI/2;
+ const sm=D(5,0x6b6a66,.07,i=>[3.2,0,0]);ups.push((d,t)=>{pl.position.set(Math.cos(t*.7)*3.2,0,-Math.sin(t*.7)*3.2)});
+ return[['نجم بعيد','تدور حول نجم آخر غير الشمس كواكب أخرى.',[st]],['كوكب خارج النظام الشمسي','يسمى كوكبًا خارج النظام الشمسي؛ اكتُشف أول كوكب منها عام 1995م، وهو كوكب كبير الحجم شبيه بالمشتري عالي الحرارة قريب من نجمه.',[pl]],['مدار الكوكب','يدور الكوكب حول نجمه؛ ويكتشف العلماء آلاف الكواكب بالمقاريب (التلسكوبات) في مجرة درب التبانة.',[ob]]]};
+const expand=()=>{const g=G(),bl=S(2,0xf0a0c0,[0,0,0],{transparent:true,opacity:.35,depthWrite:false},g);
+ const dots=[];for(let i=0;i<18;i++){const u=i*2.4,v=Math.acos(1-2*(i+.5)/18),p=[Math.sin(v)*Math.cos(u)*2,Math.cos(v)*2,Math.sin(v)*Math.sin(u)*2];dots.push(S(.1,0xfff4c0,p,{emissive:0xffd34d,emissiveIntensity:.7},g))}
+ ups.push((d,t)=>{const k=1+(Math.sin(t*.8)+1)*.28;g.scale.setScalar(k);dots.forEach(m=>m.scale.setScalar(1/k))});
+ return[['البالون (الكون)','الكون Universe: كل ما هو موجود من فضاء ومجرات وغبار كوني وغازات؛ والمجرات وحدة بنائه.',[bl]],['النقاط (المجرات)','تتباعد المجرات بعضها عن بعض بسرعات مختلفة، فيتّسع الكون على نحو مستمر.',dots],['تمدد الكون','Expansion of the Universe: عند نفخ البالون تتباعد النقاط بعضها عن بعض كما تتباعد المجرات؛ الفضاء هو الفراغ الموجود بين الأجرام السماوية.',[bl]]]};
+
+/* إثراء: تحلية مياه البحر بالطاقة الشمسية + السخان الشمسي */
+const desal=()=>{const sun=S(.8,0xfac775,[-5.2,3.2,0],{emissive:0xffa500,emissiveIntensity:.9}),rays=[...flow(0xffd34d,[-4.4,2.8,0],[-1.8,.2,0],7,.11,.3),...flow(0xffd34d,[-4.4,1.6,0],[-2.2,-.7,0],5,.1,.3)];
+ const bs=B(5.2,.5,2.8,0x2a2a2e,[0,-1.95,0]),wt=B(5,.35,2.6,0x2a7ab8,[0,-1.55,0],{transparent:true,opacity:.85}),sl=D(12,0xffffff,.1,i=>[-2.2+(i%6)*.85,-1.35,-.6+Math.floor(i/6)*1.2]);
+ const g1=B(3.2,.06,2.8,0xcfe8f5,[-1.4,-.25,0],{transparent:true,opacity:.28,depthWrite:false}),g2=B(3.2,.06,2.8,0xcfe8f5,[1.4,-.25,0],{transparent:true,opacity:.28,depthWrite:false});g1.rotation.z=.49;g2.rotation.z=-.49;
+ const vp=[...flow(0xffffff,[-1.4,-1.3,0],[-.9,.2,0],5,.1,.22),...flow(0xffffff,[1.4,-1.3,0],[.9,.2,0],5,.1,.22)];
+ const dr=D(10,0x9fd0f0,.07,i=>[0,0,0]);dr.forEach((m,i)=>{m.ph=i/5%1;m.sd=i<5?-1:1});
+ ups.push((d,t)=>dr.forEach(m=>{const k=(t*.25+m.ph)%1;m.position.set(m.sd*k*2.7,.45-k*1.4,.4*(m.ph>.5?1:-1))}));
+ const tr=[B(.5,.25,2.8,0x9aa5ab,[-3.05,-1.2,0]),B(.5,.25,2.8,0x9aa5ab,[3.05,-1.2,0])],pp=lim([3.05,-1.3,0],[4,-1.8,0],.07,0x9aa5ab),cp=C(.45,.6,0xcfe8f5,[4.1,-2.1,0],GL),fw=C(.4,.35,0x6aa8e8,[4.1,-2.25,0],{transparent:true,opacity:.7});
+ return[['الشمس (الطاقة الشمسية)','مصدر الطاقة الذي يبخّر ماء البحر في التحلية بالطاقة الشمسية Solar Water Desalination.',[sun,...rays]],['ماء البحر المالح','يحتوي أملاحًا وشوائب ورواسب تُنظَّف منه؛ عند التبخر تبقى الأملاح في الحوض.',[bs,wt,...sl]],['بخار الماء','تبخر المياه باستخدام الطاقة الشمسية، ويرتفع البخار نحو الغطاء الزجاجي.',vp],['الغطاء الزجاجي','يسمح بمرور أشعة الشمس، ويتكثف عليه البخار على شكل قطرات تنزلق نحو الأسفل.',[g1,g2,...dr]],['ماء عذب صالح للاستخدام','يُجمَّع الماء المتكثف ويُستخدم للشرب أو للزراعة. (أُسِّس أول مشروع تقطير شمسي عام 1872م في تشيلي).',[...tr,pp,cp,fw]]]};
+const sheat=()=>{const sun=S(.8,0xfac775,[-5.5,3.2,0],{emissive:0xffa500,emissiveIntensity:.9}),rays=[...flow(0xffd34d,[-4.8,2.8,0],[-2.8,-.6,0],6,.11,.3),...flow(0xffd34d,[-4.2,3.1,0],[-1.8,-.2,0],6,.1,.3)];
+ const pn=G([-1.8,-1.4,0]);pn.rotation.z=.55;const bs=B(3.8,.15,2.6,0x333338,[0,0,0],{},pn),gl=B(3.8,.05,2.6,0xcfe8f5,[0,.38,0],{transparent:true,opacity:.22,depthWrite:false},pn),pp=[-1,-.6,-.2,.2,.6,1].map(z=>C(.08,3.6,0x111111,[0,.15,z*1.1],{},pn));pp.forEach(p=>p.rotation.z=Math.PI/2);
+ const tk=C(.85,3.4,0xc8ccd0,[.7,1.5,0],{metalness:.7,roughness:.3});tk.rotation.z=Math.PI/2;const ins=C(.88,3.0,0xf0d070,[.7,1.5,0],{transparent:true,opacity:.4});ins.rotation.z=Math.PI/2;
+ const hot=[...flow(0xe24b4a,[-3.3,-2.3,0],[-.25,-.4,0],7,.11,.25),...flow(0xe24b4a,[-.25,-.4,0],[-.25,1.2,0],4,.11,.25)],out=flow(0xe24b4a,[2.4,1.5,0],[4.6,1.5,0],5,.12,.3),cold=[...flow(0x4aa0e0,[2.2,.9,0],[2.2,-2.45,0],5,.11,.25),...flow(0x4aa0e0,[2.2,-2.45,0],[-3.4,-2.45,0],8,.11,.25)];
+ const cp=[lim([2.2,.7,0],[2.2,-2.45,0],.06,0x4a6a90),lim([2.2,-2.45,0],[-3.4,-2.45,0],.06,0x4a6a90),lim([-.25,-.4,0],[-.25,.8,0],.06,0x8a2a2a)];
+ return[['أشعة الشمس','تنتقل بالإشعاع وتمتصها الأنابيب السوداء فتزداد طاقة حركة جسيماتها وترتفع حرارتها.',[sun,...rays]],['اللوح والأنابيب السوداء','أنابيب معدنية مطلية باللون الأسود تمتص الإشعاع الشمسي جيدًا؛ تنتقل الحرارة منها إلى الماء داخلها بالتوصيل.',[bs,gl,...pp]],['الماء الساخن (تيار الحمل)','الماء الساخن أقل كثافة فيرتفع نحو الخزان، ويحل محله ماء بارد؛ بهذا الحمل يدور الماء دون مضخة.',hot],['الماء البارد العائد','يهبط الماء البارد من الخزان إلى أسفل اللوح ليسخن من جديد.',[...cold,...cp]],['خزان الماء الساخن','يخزن الماء الساخن (وبعازل حراري يحفظ حرارته) لتزويد المنازل بالماء الساخن في أي وقت.',[tk,ins,...out]]]};
+
+const U=[
+{n:'الوحدة 5: البيئة',c:'#3b9a2a',L:[['الدرس 1: الأنظمة البيئية',[['مستويات التنظيم',eco],['صحة النظام البيئي',health],['الأنواع الأصلية والغازية',inv]]],['الدرس 2: الجماعات الحيوية',[['عوامل حجم الجماعة',popf],['كثافة الجماعة',dens]]]]},
+{n:'الوحدة 6: المخاليط وطرائق فصلها',c:'#378add',L:[['الدرس 1: المواد النقية والمخاليط',[['نقية ومخاليط',pure],['المحاليل',soln],['مشبع وغير مشبع',sat],['التركيز',conc]]],['الدرس 2: فصل المخاليط',[['المغناطيس',magnet],['المنخل',sieve],['الترشيح',filt],['التبخير والتبلور',evap],['التقطير',dist],['إثراء: التحلية الشمسية',desal]]]]},
+{n:'الوحدة 7: الصوت',c:'#7f77dd',L:[['الدرس 1: الموجات',[['مستعرضة وطولية',waves],['ميكانيكية وكهرومغناطيسية',emw]]],['الدرس 2: الصوت والسمع',[['نشوء الصوت',sound],['الأذن',ear],['شدة الصوت ودرجته',loud],['فوق الصوتية',ultra]]]]},
+{n:'الوحدة 8: الحرارة',c:'#d85a30',L:[['الدرس 1: الحرارة وطرائق انتقالها',[['درجة الحرارة',tmp],['التوصيل',cond],['الحمل',conv],['الإشعاع',rad]]],['الدرس 2: الحرارة في حياتنا',[['التدفئة والتكييف',room],['العزل الحراري',insul],['إثراء: السخان الشمسي',sheat]]]]},
+{n:'الوحدة 9: علوم الفضاء',c:'#5a4fcf',L:[['الدرس 1: المجرات',[['أنواع المجرات',gal],['ألوان النجوم',stars],['النظام الشمسي',solar],['خارج النظام الشمسي',exo]]],['الدرس 2: الفضاء والكون',[['تمدد الكون',expand]]]]}];
+
+let P=[],sel=-1,auto=true,drag=false,lx=0,ly=0,dn=null;
+function mk(el,items,ix,fn){el.innerHTML='';items.forEach((x,i)=>{const b=document.createElement('button');b.textContent=x;if(i==ix)b.className='on';b.onclick=()=>fn(i);el.appendChild(b)})}
+function load(u,l=0,s=0){
+ const U1=U[u],L=U1.L[l];document.documentElement.style.setProperty('--c',U1.c);
+ mk($('units'),U.map(x=>x.n),u,i=>load(i));mk($('lessons'),U1.L.map(x=>x[0]),l,i=>load(u,i));mk($('scenes'),L[1].map(x=>x[0]),s,i=>load(u,l,i));
+ root.children.slice().forEach(o=>root.remove(o));ups=[];$('x').innerHTML='';cur=root;sel=-1;
+ P=L[1][s][1]();$('t').textContent=L[1][s][0];$('d').textContent='انقر على جزء من النموذج لمعرفة وظيفته.';
+ $('parts').innerHTML='';P.forEach((p,i)=>{p[2].forEach(m=>m.pi=i);const b=document.createElement('button');b.id='pb'+i;b.innerHTML='<span style="width:10px;height:10px;border-radius:50%;background:#'+p[2][0].material.color.getHexString()+';display:inline-block;border:1px solid var(--bd)"></span>'+p[0];b.onclick=()=>show(i);$('parts').appendChild(b)});
+ root.rotation.set(.15,0,0);
+}
+function show(i){sel=i;$('d').innerHTML='<b>'+P[i][0]+'</b><br>'+P[i][1];P.forEach((p,j)=>{const b=$('pb'+j);b.className=j==i?'on':''})}
+const ray=new T.Raycaster();
+cv.onpointerdown=e=>{drag=true;lx=e.clientX;ly=e.clientY;dn=[lx,ly];cv.setPointerCapture(e.pointerId)};
+cv.onpointerup=e=>{drag=false;if(dn&&Math.hypot(e.clientX-dn[0],e.clientY-dn[1])<5){const r=cv.getBoundingClientRect();ray.setFromCamera(new T.Vector2((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1),cam);const h=ray.intersectObjects(root.children,true).filter(x=>x.object.pi!==undefined),o=h.find(x=>!x.object.material.transparent)||h[0];if(o)show(o.object.pi)}};
+cv.onpointermove=e=>{if(!drag)return;root.rotation.y+=(e.clientX-lx)*.01;root.rotation.x=Math.max(-.6,Math.min(.9,root.rotation.x+(e.clientY-ly)*.006));lx=e.clientX;ly=e.clientY};
+cv.onwheel=e=>{e.preventDefault();cam.position.z=Math.max(6,Math.min(28,cam.position.z+e.deltaY*.01))};
+$('auto').onclick=()=>{auto=!auto;$('auto').className=auto?'on':''};
+function size(){const s=$('stage'),a=s.clientWidth/s.clientHeight;R.setSize(s.clientWidth,s.clientHeight,false);cam.aspect=a;cam.position.set(0,2.4,a>=1.4?11.5:Math.min(26,16.1/a));cam.lookAt(0,0,0);cam.updateProjectionMatrix()}
+addEventListener('resize',size);
+let t0=performance.now(),tt=0;
+function loop(n){const d=Math.min((n-t0)/1000,.05);t0=n;tt+=d;if(auto&&!drag)root.rotation.y+=d*.25;
+ ups.forEach(f=>f(d,tt));
+ P.forEach((p,i)=>p[2].forEach(m=>{if(m.em===undefined)m.em=m.material.emissive.getHex();m.material.emissive.setHex(i===sel?0x666666:m.em)}));
+ R.render(sc,cam);requestAnimationFrame(loop)}
+size();load(2-2);requestAnimationFrame(loop);
+</script>
+<script>
+function openAbout(e){if(e)e.stopPropagation();$('about').style.display='flex'}
+function closeAbout(){$('about').style.display='none'}
+(function(){const L=U.flatMap(u=>u.L);$('nU').textContent=U.length;$('nL').textContent=L.length;$('nM').textContent=L.reduce((a,l)=>a+l[1].length,0);
+$('uList').innerHTML=U.map(u=>'<li>'+u.n+' ← '+u.L.length+' دروس</li>').join('');
+$('aboutBtn').onclick=openAbout})();
+</script>
+<script>
+if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+</script>
+</body>
+</html>
